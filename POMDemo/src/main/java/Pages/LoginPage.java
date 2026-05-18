@@ -22,6 +22,7 @@ public class LoginPage extends BasePage {
         PageFactory.initElements(driver, this);
     }
 
+    @Override
     public void navigate() {
         driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
     }

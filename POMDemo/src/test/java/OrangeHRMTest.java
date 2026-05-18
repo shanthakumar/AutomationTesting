@@ -1,4 +1,4 @@
-import Pages.LoginPage;
+import Pages.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,15 +22,33 @@ public class OrangeHRMTest {
     }
 
     @Test
-    public void VerifyAdmin() {
+    public void VerifyAdmin() throws InterruptedException {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.navigate();
         loginPage.login();
+
+        DashboardPage dashboardPage = new DashboardPage(driver);
+        dashboardPage.selectAdmin();
+
+        AdminPage adminPage = new AdminPage(driver);
+        adminPage.verifyAdmin("Admin");
+
+        LogoutPage logoutPage = new LogoutPage(driver);
+        logoutPage.logout();
+        Thread.sleep(3000);
     }
 
     @Test
     public void VerifyPIM() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.navigate();
+        loginPage.login();
 
+        DashboardPage dashboardPage = new DashboardPage(driver);
+        dashboardPage.selectPIM();
+
+        PIMPage pimPage = new PIMPage(driver);
+        pimPage.verifyPIN("1234");
     }
 
     @AfterMethod
