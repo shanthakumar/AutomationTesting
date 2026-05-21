@@ -13,6 +13,9 @@ public class AdminPage extends BasePage {
     @FindBy(xpath = "//button[text()=' Search ']")
     public WebElement searchButton;
 
+    @FindBy(xpath = "//button[@class='oxd-button oxd-button--medium oxd-button--ghost']")
+    public WebElement resetButton;
+
     @FindBy(xpath = "(//span[@class='oxd-text oxd-text--span'])[1]")
     public WebElement result;
 
@@ -22,6 +25,7 @@ public class AdminPage extends BasePage {
     }
 
     public void verifyAdmin(String name) {
+        click(resetButton);
         type(usernameTextField, name);
         click(searchButton);
         result.isDisplayed();

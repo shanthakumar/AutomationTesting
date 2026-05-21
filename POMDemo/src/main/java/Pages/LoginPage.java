@@ -1,5 +1,6 @@
 package Pages;
 
+import Utilities.ConfigReader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,26 +18,29 @@ public class LoginPage extends BasePage {
     @FindBy(xpath = "//button[@type='submit']")
     private WebElement loginButton;
 
+    ConfigReader configReader;
+
     public LoginPage(WebDriver driver) {
         super(driver);
+        configReader = new ConfigReader();
         PageFactory.initElements(driver, this);
     }
 
     @Override
     public void navigate() {
-        driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+        driver.get(configReader.getProperty("url"));
     }
 
     public void login() {
-        login("Admin", "admin123");
+        String username = configReader.getProperty("username");
+        String password = configReader.getProperty("password");
+        login(username, password);
     }
 
     public void login(String name, String password) {
         wait.until(ExpectedConditions.visibilityOf(usernameTextField));
         type(usernameTextField, name);
-        //usernameTextField.sendKeys(name);
         type(passwordTextField, password);
-        //passwordTextField.sendKeys(password);
         click(loginButton);
     }
 }

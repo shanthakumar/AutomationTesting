@@ -13,6 +13,9 @@ public class PIMPage extends BasePage {
     @FindBy(xpath = "//button[normalize-space()='Search']")
     public WebElement searchButton;
 
+    @FindBy(xpath = "//button[@class='oxd-button oxd-button--medium oxd-button--ghost']")
+    public WebElement resetButton;
+
     @FindBy(xpath = "//div[@class='orangehrm-horizontal-padding orangehrm-vertical-padding']//child::span")
     public WebElement result;
 
@@ -21,7 +24,8 @@ public class PIMPage extends BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    public void verifyPIN(String name) {
+    public void verifyPIM(String name) {
+        click(resetButton);
         type(employeeSearchField, name);
         click(searchButton);
         result.isDisplayed();

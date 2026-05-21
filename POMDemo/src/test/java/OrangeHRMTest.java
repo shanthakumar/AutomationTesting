@@ -1,7 +1,7 @@
 import Pages.*;
+import Utilities.ExcelReader;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -12,6 +12,7 @@ import java.time.Duration;
 public class OrangeHRMTest {
 
     WebDriver driver;
+    ExcelReader excelReader;
 
     @BeforeMethod
     public void setup() {
@@ -19,6 +20,7 @@ public class OrangeHRMTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+        excelReader = new ExcelReader();
     }
 
     @Test
@@ -30,16 +32,21 @@ public class OrangeHRMTest {
         DashboardPage dashboardPage = new DashboardPage(driver);
         dashboardPage.selectAdmin();
 
-        AdminPage adminPage = new AdminPage(driver);
-        adminPage.verifyAdmin("Admin");
+        String[] admins = excelReader.getData("Sheet1");
 
+        for (String user: admins) {
+            AdminPage adminPage = new AdminPage(driver);
+            adminPage.verifyAdmin(user);
+            Thread.sleep(2000);
+        }
+
+        Thread.sleep(3000);
         LogoutPage logoutPage = new LogoutPage(driver);
         logoutPage.logout();
-        Thread.sleep(3000);
     }
 
     @Test
-    public void VerifyPIM() {
+    public void VerifyPIM() throws InterruptedException {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.navigate();
         loginPage.login();
@@ -47,8 +54,13 @@ public class OrangeHRMTest {
         DashboardPage dashboardPage = new DashboardPage(driver);
         dashboardPage.selectPIM();
 
-        PIMPage pimPage = new PIMPage(driver);
-        pimPage.verifyPIN("1234");
+        String[] ids = excelReader.getData("Sheet2");
+
+        for (String id: ids) {
+            PIMPage pimPage = new PIMPage(driver);
+            pimPage.verifyPIM(id);
+            Thread.sleep(2000);
+        }
     }
 
     @AfterMethod
