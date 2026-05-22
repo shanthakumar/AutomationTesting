@@ -1,23 +1,25 @@
 package pages;
 
-import Utilities.WaitHelper;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 // Common Functionality
 public class BasePage
 {
     WebDriver driver;
-    WaitHelper waitHelper;
-
+    WebDriverWait wait;
     private By userDropdown = By.xpath("//i[@class='oxd-icon bi-caret-down-fill oxd-userdropdown-icon']");
     private By logoutLink = By.xpath("//a[text()='Logout']");
 
     public BasePage(WebDriver driver)
     {
         this.driver = driver;
-        waitHelper = new WaitHelper(driver);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
     }
 
     @Step("Logout from application")
@@ -29,7 +31,7 @@ public class BasePage
     }
 
     public void isElementDisplayed(By path) {
-        waitHelper.isElementDisplayed(path);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(path)).isDisplayed();
     }
 
     @Step("Click on Menu Item")

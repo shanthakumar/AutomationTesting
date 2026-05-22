@@ -17,11 +17,13 @@ public class PIMPage extends BasePage
     {
         clickMenuItem(PIM_MENU_INDEX);
     }
+
     @Step("Search for Employee")
     public void searchEmployee(String employeeId)
     {
         searchRecord(employeeId);
     }
+
     @Step("Verify PIM record")
     public boolean verifyRecordDisplayed()
     {

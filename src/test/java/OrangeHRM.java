@@ -15,8 +15,7 @@ import testdata.LoginTestData;
 
 import java.time.Duration;
 
-public class OrangeHRM
-{
+public class OrangeHRM {
     WebDriver driver;
 
     private LoginPage loginPage;
@@ -26,8 +25,7 @@ public class OrangeHRM
     @BeforeMethod
     @Step("Setup browser and initialize object")
     @Description("DRIVER SETUP | Wait | Maximize")
-    public void setup()
-    {
+    public void setup() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -41,10 +39,9 @@ public class OrangeHRM
     @Description("Verify Admin user")
     @Severity(SeverityLevel.CRITICAL)
     @Test(priority = 1)
-    public void VerifyAdmin()
-    {
-        loginPage.navigateToLogin();
-        loginPage.loginUser("Admin","admin123");
+    public void VerifyAdmin() {
+        loginPage.load();
+        loginPage.loginUser("Admin", "admin123");
         adminPage.clickAdminMenu();
         adminPage.searchUser("Admin");
         adminPage.verifyRecordDisplayed();
@@ -54,10 +51,9 @@ public class OrangeHRM
     @Description("Verify PIM user")
     @Severity(SeverityLevel.CRITICAL)
     @Test(priority = 2)
-    public void VerifyPIM()
-    {
-        loginPage.navigateToLogin();
-        loginPage.loginUser("Admin","admin123");
+    public void VerifyPIM() {
+        loginPage.load();
+        loginPage.loginUser("Admin", "admin123");
         pimPage.clickPIMMenu();
         pimPage.searchEmployee("123");
         pimPage.verifyRecordDisplayed();
@@ -66,26 +62,22 @@ public class OrangeHRM
 
     @Description("Verify Login Using DDT")
     @Test(priority = 200, dataProvider = "testAdmins", dataProviderClass = LoginTestData.class)
-    public void VerifyLoginUsingDDT(String username, String password)
-    {
-        loginPage.navigateToLogin();
+    public void VerifyLoginUsingDDT(String username, String password) {
+        loginPage.load();
         loginPage.loginUser(username, password);
     }
 
     @Description("Verify Invalid Login Credentials")
     @Test(priority = 201, dataProvider = "invalidUserCredentials", dataProviderClass = LoginTestData.class)
-    public void VerifyInvalidLogin(String username, String password)
-    {
-        loginPage.navigateToLogin();
+    public void VerifyInvalidLogin(String username, String password) {
+        loginPage.load();
         loginPage.verifyUnsuccessfulLogin(username, password);
     }
 
     @AfterMethod
     @Step("Close Browser")
-    public void teardown()
-    {
-        if(driver !=null)
-        {
+    public void teardown() {
+        if (driver != null) {
             driver.quit();
         }
     }

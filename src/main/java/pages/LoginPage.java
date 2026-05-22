@@ -19,19 +19,17 @@ public class LoginPage extends BasePage
     }
 
     @Step("Navigate to URL")
-    public void navigateToLogin()
+    public void load()
     {
         driver.get(LOGIN_URL);
         attachScreenshot("Login Page");
     }
 
-    //@Step("Login with credentials")
-    public void login(String username,String password)
+    private void login(String username,String password)
     {
         driver.findElement(usernameField).sendKeys(username);
         driver.findElement(passwordField).sendKeys(password);
         driver.findElement(loginButton).click();
-        //attachScreenshot("After Login");
     }
 
     @Step("Login with valid credentials")
