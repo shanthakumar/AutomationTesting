@@ -25,7 +25,7 @@ public class LoginPage extends BasePage
         attachScreenshot("Login Page");
     }
 
-    private void login(String username,String password)
+    private void login(String username, String password)
     {
         driver.findElement(usernameField).sendKeys(username);
         driver.findElement(passwordField).sendKeys(password);
