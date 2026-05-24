@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
+    <parameter name="url" value="https://google.com"/>
     <test verbose="2" preserve-order="true" name="OrangeHRM">
         <classes>
-            <class name="OrangeHRM"></class>
+            <class name="OrangeHRM"/>
+            <class name="LoginTest"/>
+        </classes>
+    </test>
+    <test name="Chrome Browser Test">
+        <parameter name="browser" value="Chrome"/>
+        <classes>
+            <class name="CrossBrowserTest"/>
+        </classes>
+    </test>
+    <test name="Safari Browser Test">
+        <parameter name="browser" value="Safari"/>
+        <classes>
+            <class name="CrossBrowserTest"/>
         </classes>
     </test>
 </suite>

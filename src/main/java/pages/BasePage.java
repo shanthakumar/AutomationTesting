@@ -1,13 +1,14 @@
 package pages;
 
 import Utilities.WaitHelper;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.safari.SafariDriver;
 
 // Common Functionality
 public class BasePage
@@ -22,6 +23,23 @@ public class BasePage
     {
         this.driver = driver;
         waitHelper = new WaitHelper(driver);
+    }
+
+    public static WebDriver getDriver(String name) {
+        switch (name.toLowerCase()) {
+            case "safari":
+                WebDriverManager.safaridriver().setup();
+                return new SafariDriver();
+            case "firefox":
+                WebDriverManager.firefoxdriver().setup();
+                return new FirefoxDriver();
+            case "edge":
+                WebDriverManager.edgedriver().setup();
+                return new EdgeDriver();
+            default:
+                WebDriverManager.chromedriver().setup();
+                return new ChromeDriver();
+        }
     }
 
     public void load() {
@@ -40,8 +58,8 @@ public class BasePage
         attachScreenshot("After Logout");
     }
 
-    public void isElementDisplayed(By path) {
-        waitHelper.isElementDisplayed(path);
+    public boolean isElementDisplayed(By path) {
+        return waitHelper.isElementDisplayed(path);
     }
 
     @Step("Click on Menu Item")
@@ -54,6 +72,7 @@ public class BasePage
     @Step("Search for a record")
     public void searchRecord(String searchText)
     {
+        driver.findElement(By.xpath("//button[@class='oxd-button oxd-button--medium oxd-button--ghost']")).click();
         driver.findElement(By.xpath("(//input[@class='oxd-input oxd-input--active'])[2]")).sendKeys(searchText);
         driver.findElement(By.xpath("//button[text()=' Search ']")).click();
         attachScreenshot("Search Results");

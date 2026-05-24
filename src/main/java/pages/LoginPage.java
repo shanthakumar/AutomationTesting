@@ -1,11 +1,14 @@
 package pages;
 
+import Utilities.ConfigReader;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 
 public class LoginPage extends BasePage
 {
+    ConfigReader configReader;
     private static String LOGIN_URL = "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login";
 
     private By usernameField = By.xpath("//input[@name='username']");
@@ -16,6 +19,7 @@ public class LoginPage extends BasePage
     public LoginPage(WebDriver driver)
     {
         super(driver);
+        configReader = new ConfigReader();
     }
 
     @Step("Navigate to URL")
@@ -23,6 +27,12 @@ public class LoginPage extends BasePage
     {
         driver.get(LOGIN_URL);
         attachScreenshot("Login Page");
+    }
+
+    public void login() {
+        String username = configReader.getProperty("username");
+        String password = configReader.getProperty("password");
+        login(username, password);
     }
 
     private void login(String username, String password)
@@ -41,8 +51,12 @@ public class LoginPage extends BasePage
     public void verifyUnsuccessfulLogin(String username,String password)
     {
         login(username, password);
-        isElementDisplayed(invalidCredsText);
+        Assert.assertTrue(isElementDisplayed(invalidCredsText), "Login Error message should be displayed.");
         attachScreenshot("Unsuccessful Login: Invalid credentials");
     }
 
+    @Step("Login using Config credentials")
+    public void verifyConfigUser() {
+        login();
+    }
 }

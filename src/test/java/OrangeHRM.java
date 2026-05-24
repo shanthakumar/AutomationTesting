@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 import pages.AdminPage;
 import pages.LoginPage;
 import pages.PIMPage;
-import testdata.LoginTestData;
 
 import java.time.Duration;
 
@@ -60,18 +59,15 @@ public class OrangeHRM {
         pimPage.logout();
     }
 
-    @Description("Verify Login Using DDT")
-    @Test(priority = 200, dataProvider = "testAdmins", dataProviderClass = LoginTestData.class)
-    public void VerifyLoginUsingDDT(String username, String password) {
+    @Description("Verify Multiple PIM users")
+    @Severity(SeverityLevel.NORMAL)
+    @Test(priority = 2)
+    public void VerifyMultipleRecords() {
         loginPage.load();
-        loginPage.loginUser(username, password);
-    }
-
-    @Description("Verify Invalid Login Credentials")
-    @Test(priority = 201, dataProvider = "invalidUserCredentials", dataProviderClass = LoginTestData.class)
-    public void VerifyInvalidLogin(String username, String password) {
-        loginPage.load();
-        loginPage.verifyUnsuccessfulLogin(username, password);
+        loginPage.login();
+        pimPage.clickPIMMenu();
+        pimPage.searchMultipleEmployees();
+        pimPage.logout();
     }
 
     @AfterMethod
@@ -81,16 +77,5 @@ public class OrangeHRM {
             driver.quit();
         }
     }
-
-//    DDT
-//    Cross Browser Testing
-//    Parallel Testing
-
-
-//    Assertions
-//    XPath, XPath Axes & CSS Selector
-//    Broken Links
-//    read data from testng.xml
-//    findElements
 
 }
